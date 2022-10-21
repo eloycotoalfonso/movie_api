@@ -7,5 +7,7 @@ This is the server-side of a mymovies that will retrieve information forn movies
  - http
  - url
  - fs
+ - Express.js
+ - Morgan
  
 

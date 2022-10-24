@@ -98,10 +98,7 @@ let requestTime = (req, res, next) => {
 app.use(morgan('combined',{stream: accessLogStream})); //This will log in a file (calling accesLogStream) and using Morgan to log the client request
 app.use(express.static('public')); ////This allows using the express static resources exposed to avoid calling them one by one
 
-app.use((err, req, res, next) =>{
-    console.error(err.stack);
-    res.status(500).send('Something has failed. Please try it later!');
-});
+
 /*app.get('/',(req, res)=>{
     res.send('Welcome to my book club!');
 });*/
@@ -127,6 +124,11 @@ app.get('/secreturl',(req, res) =>{
 //Response to the /movies request (this is returning a JSON)
 app.get('/movies',(req, res)=>{
     res.json(topMovies);
+});
+
+app.use((err, req, res, next) =>{
+    console.error(err.stack);
+    res.status(500).send('Something has failed. Please try it later!');
 });
 
 //Allowing the app via dot notation to listen the port 8080 and loging a message in the console

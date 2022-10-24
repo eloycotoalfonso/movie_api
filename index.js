@@ -1,10 +1,12 @@
 // Requiring necesary libraries and framewors and assign them to variables
+const bodyParser = require('body-parser');
 const express = require ('express');
 const { get } = require('express/lib/response');
 const http = require ('http'),
     morgan = require ('morgan'),
     fs = require('fs'),
-    path = require ('path');
+    path = require ('path'),
+    uuid = require('uuid');
 
 const app = express();
 
@@ -32,54 +34,72 @@ let topMovies = [
     {
         position: 1,
         title: 'Inception',
-        director: 'Christopher Nolan'
+        director: 'Christopher Nolan',
+        genre: 'sci-fi'
     },
     {
         position: 2,
         title: 'Amores perros',
-        director: 'Alejandro Gonzalez Iñarritu'
+        director: 'Alejandro Gonzalez Iñarritu',
+        genre: 'Thriller'
     },
     {
         position: 3,
         title: 'Schlinder\'s list',
-        director: 'Christopher NolanStieven Spielberg'
+        director: 'Stieven Spielberg',
+        genre: 'historical drama'
     },
     {
         position: 4,
         title: 'Minority Report',
-        director: 'Stieven Spielberg'
+        director: 'Stieven Spielberg',
+        genre: 'sci-fi'
     },
     {
         position: 5,
         title: 'The Hateful Eight',
-        director: 'Quentin Tarantino'
+        director: 'Quentin Tarantino',
+        genre: 'Western'
     },
     {
         position: 6,
         title: 'The Departed',
-        director: 'Martin Scorsese'
+        director: 'Martin Scorsese',
+        genre: 'Thriller'
     },
     {
         position: 7,
         title: 'Grand Budapest Hotel',
-        director: 'Wes Anderson'
+        director: 'Wes Anderson',
+        genre: 'Comedy'
+
     },
     {
         position: 8,
         title: 'Silver linings playbook',
-        director: 'David O. Russell'
+        director: 'David O. Russell',
+        genre: 'romantic/drama'
     },
     {
         position: 9,
         title: 'Gladiator',
-        director: 'Ridley Scott'
+        director: 'Ridley Scott',
+        genre: 'Adventure'
     },
     {
         position: 10,
         title: 'The kings speech',
-        director: 'Tom Hooper'
+        director: 'Tom Hooper',
+        genre: 'Historical/drama'
     },
     
+];
+
+let users = [
+    {
+        name: "Peter",
+        age: '25'
+    }
 ];
 
 /*let myLogger = (req, res, next) =>{
@@ -97,7 +117,7 @@ let requestTime = (req, res, next) => {
 // app.use(requestTime); //This will log the current time manually
 app.use(morgan('combined',{stream: accessLogStream})); //This will log in a file (calling accesLogStream) and using Morgan to log the client request
 app.use(express.static('public')); ////This allows using the express static resources exposed to avoid calling them one by one
-
+app.use(bodyParser.json());
 
 /*app.get('/',(req, res)=>{
     res.send('Welcome to my book club!');
@@ -125,6 +145,50 @@ app.get('/secreturl',(req, res) =>{
 app.get('/movies',(req, res)=>{
     res.json(topMovies);
 });
+
+//Return data about a movie by title
+app.get('/movies/:name',(req, res)=>{
+    res.json(topMovies.find((movie)=>{
+        return movie.title === req.params.name;
+    }));
+});
+
+//
+app.get('/movies/genre/:name',(req, res) =>{
+    res.send('The info about that genre was successfully responded');
+});
+
+//
+app.get('/movies/directors/:name',(req, res)=> {
+    res.send('The info about that director was successfully responded');
+});
+
+//
+app.post('/users/new', (req, res) => {
+    res.send('The user has been successfully registered.');
+});
+
+//
+app.put('/users/:name', (req, res) => {
+    res.send('The current user info has been successfully updated.');
+});
+
+//
+app.post('/movies/:name', (req, res) => {
+    res.send("The movie has been added succesfully");
+});
+
+//
+app.delete('/movies/:name', (req, res) => {
+    res.send('The movie has been succesfully removed.');
+});
+
+//
+app.delete('/users/:name', (req, res) => {
+    res.send('The user has been successfully removed.');
+});
+
+
 
 app.use((err, req, res, next) =>{
     console.error(err.stack);

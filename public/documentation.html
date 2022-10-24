@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>documentation</title>
+    <link rel ="stylesheet" href = "styles.css" type = "text/css"/>
 </head>
 <body>
     <header></header>
@@ -15,6 +16,81 @@
             <br>
             This task is based on the server side, the client-side will be part of the next achievement of the course.
         </p>
+        <table class= "documentation__table">
+            <thead>
+              <tr>
+                <th>Request</th>
+                <th>URL</th>
+                <th>HTTP Method</th>
+                <th>Request body data format</th>
+                <th>Response body data format</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Return a list of ALL movies to the user</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object that retrieves data about all the films</td>
+              </tr>
+              <tr>
+                <td>Return data about a single movie by title</td>
+                <td>/movies/[Name]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON Object retrieving data about a single film</td>
+              </tr>
+              <tr>
+                <td>Return data about a genre by name/title</td>
+                <td>/movies/[Genre]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON Object retrieving data about one particular genre</td>
+              </tr>
+              <tr>
+                <td>Return data about a director</td>
+                <td>/directors/[Name]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON Object retrieving data about one particular director</td>
+              </tr>
+              <tr>
+                <td>Allow new users to register</td>
+                <td>/users/[New]</td>
+                <td>POST</td>
+                <td>A JSON object holding data about the user like: {<br> name: "User Name",<br> age: "age"<br>}</brZ></td>
+                <td>A text messsage indicating the user has been registered</td>
+              </tr>
+              <tr>
+                <td>Allow users to update their user info (username)</td>
+                <td>/users/[Name]</td>
+                <td>PUT</td>
+                <td>None</td>
+                <td>A text message indicating that the user info. has been updated.</td>
+              </tr>
+              <tr>
+                <td>Allow users to add a movie to their list of favorites</td>
+                <td>/movies/[Name]</td>
+                <td>POST</td>
+                <td>A JSON object holding data about the film to add, structured like:<br>{<br>title : "Film title",<br>director : "director Name"<br>}</td>
+                <td>A text message confirming that the movie was succesfully added to favorites.</td>
+              </tr>
+              <tr>
+                <td>Allow users to remove a movie from their list of favorites</td>
+                <td>/movies/[Name]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A text message confirming that the movie was successfully removed from favorites.</td>
+              </tr>
+              <tr>
+                <td>Allow existing users to deregister</td>
+                <td>/users/[Name]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A text message confirming that the user was successfully removed.</td>
+              </tr>               
+          </table>
     </div>
     <footer></footer>
 </body>

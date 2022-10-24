@@ -1,0 +1,12 @@
+.documentation__table {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    border-left: 10px;
+    border-color: black;
+    border-width: 2px;
+  }
+
+  th {
+    padding: 10px;
+  }

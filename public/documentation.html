@@ -36,52 +36,79 @@
               </tr>
               <tr>
                 <td>Return data about a single movie by title</td>
-                <td>/movies/[Name]</td>
+                <td>/movies/[Title]</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>A JSON Object retrieving data about a single film</td>
               </tr>
               <tr>
                 <td>Return data about a genre by name/title</td>
-                <td>/movies/[Genre]</td>
+                <td>/movies/genre/[Genre]</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>A JSON Object retrieving data about one particular genre</td>
               </tr>
               <tr>
                 <td>Return data about a director</td>
-                <td>/directors/[Name]</td>
+                <td>/movies/director/[Name]</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>A JSON Object retrieving data about one particular director</td>
               </tr>
               <tr>
                 <td>Allow new users to register</td>
-                <td>/users/[New]</td>
+                <td>/users</td>
                 <td>POST</td>
-                <td>A JSON object holding data about the user like: {<br> name: "User Name",<br> age: "age"<br>}</brZ></td>
-                <td>A text messsage indicating the user has been registered</td>
+                <td> A JSON with the following format <br>{<br>
+                  "username": String,<br>
+                  "password": String,<br>
+                  "email": String,<br>
+                  "birthday": Date<br>
+                  }<br>
+                  For extample:
+                  {
+                    "username": "123",
+                    "password": "123",
+                    "email": "123@123.com",
+                    "birthday": "1234-12-12"
+                }
+                </td>
+                <td>A text messsage indicating the user has been registered, or a text message indicating the user is already used if applies.</td>
               </tr>
               <tr>
                 <td>Allow users to update their user info (username)</td>
                 <td>/users/[Name]</td>
                 <td>PUT</td>
-                <td>None</td>
-                <td>A text message indicating that the user info. has been updated.</td>
+                <td>A JSON{<br>
+                  username: String,
+                  (required)<br>
+                  password: String,
+                  (required)<br>
+                  email: String,
+                  (required)<br>
+                  }
+                  For example:
+                  {
+                    "username": "12345",
+                    "password": "12345",
+                    "email": "11111"
+                }
+                </td>
+                <td>A JSON with the updated information of the user</td>
               </tr>
               <tr>
                 <td>Allow users to add a movie to their list of favorites</td>
-                <td>/movies/[Name]</td>
+                <td>/users/[name]/movies/[movieID]</td>
                 <td>POST</td>
-                <td>A JSON object holding data about the film to add, structured like:<br>{<br>title : "Film title",<br>director : "director Name"<br>}</td>
-                <td>A text message confirming that the movie was succesfully added to favorites.</td>
+                <td>None</td>
+                <td>A JSON with the updated information of the user</td>
               </tr>
               <tr>
                 <td>Allow users to remove a movie from their list of favorites</td>
-                <td>/movies/[Name]</td>
+                <td>/users/[name]/movies/[movieID]</td>
                 <td>DELETE</td>
                 <td>None</td>
-                <td>A text message confirming that the movie was successfully removed from favorites.</td>
+                <td>A text message indicating that the movie was not found in the user's favorites, or a JSON wih the updated information of the user.</td>
               </tr>
               <tr>
                 <td>Allow existing users to deregister</td>

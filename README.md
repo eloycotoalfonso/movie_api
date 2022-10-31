@@ -12,4 +12,8 @@ This is the server-side of a mymovies that will retrieve information forn movies
  - body-parser
  - uuid
  - mongoose
+ - passport (including)
+    - jwt
+    - jsonwebtoken
+
 

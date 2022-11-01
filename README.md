@@ -15,5 +15,9 @@ This is the server-side of a mymovies that will retrieve information forn movies
  - passport (including)
     - jwt
     - jsonwebtoken
+ - CORS
+ - bcrypt
+ - express-validator
+ - Heroku
 
 

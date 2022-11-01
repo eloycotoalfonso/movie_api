@@ -1,4 +1,4 @@
-// Requiring necesary libraries and framewors and assign them to variables
+// Requiring necesary libraries and framewors and variables definition
 const bodyParser = require('body-parser');
 const express = require ('express');
 const res = require('express/lib/response');
@@ -11,6 +11,8 @@ const http = require ('http'),
     mongoose = require('mongoose'),
     Models = require('./models.js');
 const { isBuffer } = require('util');
+const cors = require ('cors');
+const bcrypt = require('bcrypt');
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -21,121 +23,30 @@ const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'),{flags:'a'});
 
 //Middlewares
-// app.use(myLogger); //This will log the client request manually
-// app.use(requestTime); //This will log the current time manually
 app.use(morgan('combined', {stream: accessLogStream})); //This will log in a file (calling accesLogStream) and using Morgan to log the client request
 app.use(express.static('public')); ////This allows using the express static resources exposed to avoid calling them one by one
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+// This will let or not access to the API from a specific origin
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+app.use(cors({
+    origin: (origin, callback) =>{
+        if(!origin) return callback (null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            let message = "The CORS policy for this app aplication doesn't allow access from origin" + origin;
+            return callback (new Error (message), false);
+        }
+    return callback(null, true);
+    }
+}));
 
 let auth = require('./auth')(app);
 const passport = require ('passport');
 require ('./passport');
 
-
 mongoose.connect('mongodb://localhost:27017/myFlixDB',{
     useNewUrlParser: true, useUnifiedTopology: true});
-
-//Returning an answer via http
-/*http.createServer((request, response) =>{
-    response.writeHead(200,{'Content-Type': 'text/plain'});
-    response.end('Welcome to my book club \n');
-}).listen(8080);
-
-console.log('My first Node test server is running on Port 8080');
-*/
-
-
-// JSON that includes the 10 top movies
-let topMovies = [
-    [
-    'My top 10 movies are:'
-    ],
-    {
-        position: 1,
-        title: 'Inception',
-        director: 'Christopher Nolan',
-        genre: 'sci-fi'
-    },
-    {
-        position: 2,
-        title: 'Amores perros',
-        director: 'Alejandro Gonzalez Iñarritu',
-        genre: 'Thriller'
-    },
-    {
-        position: 3,
-        title: 'Schlinder\'s list',
-        director: 'Stieven Spielberg',
-        genre: 'historical drama'
-    },
-    {
-        position: 4,
-        title: 'Minority Report',
-        director: 'Stieven Spielberg',
-        genre: 'sci-fi'
-    },
-    {
-        position: 5,
-        title: 'The Hateful Eight',
-        director: 'Quentin Tarantino',
-        genre: 'Western'
-    },
-    {
-        position: 6,
-        title: 'The Departed',
-        director: 'Martin Scorsese',
-        genre: 'Thriller'
-    },
-    {
-        position: 7,
-        title: 'Grand Budapest Hotel',
-        director: 'Wes Anderson',
-        genre: 'Comedy'
-
-    },
-    {
-        position: 8,
-        title: 'Silver linings playbook',
-        director: 'David O. Russell',
-        genre: 'romantic/drama'
-    },
-    {
-        position: 9,
-        title: 'Gladiator',
-        director: 'Ridley Scott',
-        genre: 'Adventure'
-    },
-    {
-        position: 10,
-        title: 'The kings speech',
-        director: 'Tom Hooper',
-        genre: 'Historical/drama'
-    },
-    
-];
-
-let users = [
-    {
-        name: "Peter",
-        age: '25'
-    }
-];
-
-/*let myLogger = (req, res, next) =>{
-    console.log(req.url);
-    next();
-};
-
-let requestTime = (req, res, next) => {
-    req.requestTime = Date.now();  
-    next();
-};*/
-
-/*app.get('/',(req, res)=>{
-    res.send('Welcome to my book club!');
-});*/
 
 //General response to the '/' requests
 app.get('/',(req, res) => {
@@ -143,12 +54,9 @@ app.get('/',(req, res) => {
     res.send(responseText);
 });
 
-/*app.get('/documentation',(req, res)=>{
+app.get('/documentation',(req, res)=>{
     res.sendFile('public/documentation.html', {root: __dirname});
 });
-app.get('/books',(req, res) =>{
-    res.json(topBooks);
-});*/
 
 // Response to the '/secreturl' request
 app.get('/secreturl', (req, res) => {
@@ -216,13 +124,14 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
     }
 */
 app.post('/users', (req, res) => {
+    let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({username: req.body.username}).then((user) => {
         if (user) {
             return res.status(400).send(req.body.username + 'already exists');
         }else{
             Users.create({
                 username: req.body.username,
-                password: req.body.password,
+                password: hashedPassword,
                 email: req.body.email,
                 birth: req.body.birthday
             })
@@ -250,6 +159,7 @@ app.get('/users', (req,res)=>{
         res.status(500).send('Error: ' + err);
     });
 });
+
 //Get a user by username
 app.get('/users/:username', (req,res) =>{
     Users.find({username: req.params.username})
@@ -312,7 +222,6 @@ app.post('/users/:username/movies/:movieID', passport.authenticate('jwt', { sess
     });
 });
     
-
 //Allow users to remove a movie from their favorites
 app.delete('/users/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndUpdate({username: req.params.username}, {$pull:
@@ -347,8 +256,6 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
         res.status(500).send('Error: ' + err);
     });
 });
-
-
 
 app.use((err, req, res, next) =>{
     console.error(err.stack);

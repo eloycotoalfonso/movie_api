@@ -274,7 +274,12 @@ app.use((err, req, res, next) =>{
     res.status(500).send('Something has failed. Please try it later!');
 });
 
-//Allowing the app via dot notation to listen the port 8080 and loging a message in the console
-app.listen(8080, ()=>{
-    console.log('Your app is listening on port 8080.');
-});
+// //Allowing the app via dot notation to listen the port 8080 and loging a message in the console
+// app.listen(8080, ()=>{
+//     console.log('Your app is listening on port 8080.');
+// });
+
+const port = process.env.PORT || 8080;
+app.listen(port,'0.0.0.0',() =>{
+    console.log('Listening on Port ' + port);
+})

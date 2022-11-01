@@ -13,6 +13,7 @@ const http = require ('http'),
 const { isBuffer } = require('util');
 const cors = require ('cors');
 const bcrypt = require('bcrypt');
+const {check, validationResult} = require ('express-validator');
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -123,7 +124,13 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
     "birthday": Date
     }
 */
-app.post('/users', (req, res) => {
+app.post('/users',[check('Username', 'Username is required').isLength({min:5}), check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(), check('Password', 'Paswword is required').not().isEmpty(), check('Email', 'Email does not appear to be valid').isEmail()], (req, res) => {
+    //Check the validation object for errors
+    let errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).json({errors: errors.array()});
+    }
+    
     let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({username: req.body.username}).then((user) => {
         if (user) {
@@ -184,7 +191,11 @@ app.get('/users/:username', (req,res) =>{
         birthday: Date
     }
 */
-app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/:username', [check('Username', 'Username is required').isLength({min:5}), check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(), check('Password', 'Paswword is required').not().isEmpty(), check('Email', 'Email does not appear to be valid').isEmail()], passport.authenticate('jwt', { session: false }), (req, res) => {
+    let errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).json({errors:errors.array()});
+    }
     Users.findOneAndUpdate({username: req.params.username}, {$set:
         {
             username: req.body.username,

@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // This will let or not access to the API from a specific origin
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 /*app.use(cors({
     origin: (origin, callback) =>{
         if(!origin) return callback (null, true);
@@ -48,11 +48,11 @@ const passport = require ('passport');
 require ('./passport');
 
 //Connecting the API tu the DB. There are two options the first one connects it to the local DB (testing and development purposes). The second is to connect it to the deployed DB.
-/*mongoose.connect('mongodb://localhost:27017/myFlixDB',{
-    useNewUrlParser: true, useUnifiedTopology: true});*/
-
-mongoose.connect('process.env.CONNECTION_URI',{
+mongoose.connect('mongodb://localhost:27017/myFlixDB',{
     useNewUrlParser: true, useUnifiedTopology: true});
+
+// mongoose.connect('process.env.CONNECTION_URI',{
+    // useNewUrlParser: true, useUnifiedTopology: true});
     
 
 
@@ -132,10 +132,10 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
     }
 */
 app.post('/users',[
-                    check('Username', 'Username is required').isLength({min: 5}),
-                    check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
-                    check('Password', 'Paswword is required').not().isEmpty(), 
-                    check('Email', 'Email does not appear to be valid').isEmail()
+                    check('username', 'Username is required').isLength({min: 5}),
+                    check('username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+                    check('password', 'Paswword is required').not().isEmpty(), 
+                    check('email', 'Email does not appear to be valid').isEmail()
                 ], (req, res) => {
    
     //Check the validation object for errors
@@ -144,7 +144,7 @@ app.post('/users',[
         return res.status(422).json({errors: errors.array()});
     }
     
-    let hashedPassword = Users.hashPassword(req.body.Password);
+    let hashedPassword = Users.hashPassword(req.body.password);
     Users.findOne({username: req.body.username}).then((user) => {
         if (user) {
             return res.status(400).send(req.body.username + 'already exists');
@@ -288,11 +288,11 @@ app.use((err, req, res, next) =>{
 });
 
 // //Allowing the app via dot notation to listen the port 8080 and loging a message in the console
-// app.listen(8080, ()=>{
-//     console.log('Your app is listening on port 8080.');
-// });
+app.listen(8080, ()=>{
+    console.log('Your app is listening on port 8080.');
+});
 
-const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0',() =>{
-    console.log('Listening on Port ' + port);
-})
+// const port = process.env.PORT || 8080;
+// app.listen(port, '0.0.0.0',() =>{
+//     console.log('Listening on Port ' + port);
+// })

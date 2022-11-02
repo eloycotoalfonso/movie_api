@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // This will let or not access to the API from a specific origin
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-app.use(cors({
+/*app.use(cors({
     origin: (origin, callback) =>{
         if(!origin) return callback (null, true);
         if(allowedOrigins.indexOf(origin) === -1){
@@ -40,8 +40,8 @@ app.use(cors({
         }
     return callback(null, true);
     }
-}));
-// app.use(cors());
+}));*/
+app.use(cors());
 
 let auth = require('./auth')(app);
 const passport = require ('passport');

@@ -46,8 +46,13 @@ let auth = require('./auth')(app);
 const passport = require ('passport');
 require ('./passport');
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB',{
+//Connecting the API tu the DB. There are two options the first one connects it to the local DB (testing and development purposes). The second is to connect it to the deployed DB.
+/*mongoose.connect('mongodb://localhost:27017/myFlixDB',{
+    useNewUrlParser: true, useUnifiedTopology: true});*/
+
+mongoose.connect('process.env.CONNECTION_URI',{
     useNewUrlParser: true, useUnifiedTopology: true});
+
 
 //General response to the '/' requests
 app.get('/',(req, res) => {

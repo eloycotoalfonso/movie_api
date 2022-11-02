@@ -130,7 +130,13 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
     "birthday": Date
     }
 */
-app.post('/users',[check('Username', 'Username is required').isLength({min:5}), check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(), check('Password', 'Paswword is required').not().isEmpty(), check('Email', 'Email does not appear to be valid').isEmail()], (req, res) => {
+app.post('/users',[
+                    check('Username', 'Username is required').isLength({min: 5}),
+                    check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+                    check('Password', 'Paswword is required').not().isEmpty(), 
+                    check('Email', 'Email does not appear to be valid').isEmail()
+                ], (req, res) => {
+   
     //Check the validation object for errors
     let errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -286,6 +292,6 @@ app.use((err, req, res, next) =>{
 // });
 
 const port = process.env.PORT || 8080;
-app.listen(port,'0.0.0.0',() =>{
+app.listen(port, '0.0.0.0',() =>{
     console.log('Listening on Port ' + port);
 })

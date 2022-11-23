@@ -1,11 +1,11 @@
 const jwtSecret = 'your_jwt_secret';
 
 const jwt = require ('jsonwebtoken'),
-    passport = require('passport');
+    passport = require('passport'); //node.js module
 
-require ('./passport'); //Local passport file
+require ('./../passport'); //Local passport file
 
-let generateJWTToken = (user) =>{
+const generateJWTToken = (user) =>{
     // console.log("The user in generateJWTToken function is: " + user.username);
     return jwt.sign(user, jwtSecret, {
         subject: user.username, //This is the username that is being encoding in the JWT

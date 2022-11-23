@@ -3,14 +3,11 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const res = require("express/lib/response");
 const { get } = require("express/lib/response");
-const http = require("http"),
   morgan = require("morgan"),
   fs = require("fs"),
   path = require("path"),
-  uuid = require("uuid"),
   mongoose = require("mongoose"),
   Models = require("./models.js");
-const { isBuffer } = require("util");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const { check, validationResult } = require("express-validator");
@@ -50,13 +47,13 @@ const passport = require("passport");
 require("./passport");
 
 //Connecting the API tu the DB. There are two options the first one connects it to the local DB (testing and development purposes). The second is to connect it to the deployed DB.
-// mongoose.connect('mongodb://localhost:27017/myFlixDB',{
-//     useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/myFlixDB',{
+    useNewUrlParser: true, useUnifiedTopology: true});
 
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// mongoose.connect(process.env.CONNECTION_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 //General response to the '/' requests
 app.get("/", (req, res) => {
@@ -96,7 +93,8 @@ app.get(
   (req, res) => {
     Movies.find({ Title: req.params.title })
       .then((movie) => {
-        res.status(200).json(movie);
+        console.log(movie[0]);
+        res.status(200).json(movie[0]);
       })
       .catch((err) => {
         console.error(err);
@@ -159,12 +157,12 @@ app.post(
   ],
   (req, res) => {
     //Check the validation object for errors
-    let errors = validationResult(req);
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
 
-    let hashedPassword = Users.hashPassword(req.body.password);
+    const hashedPassword = Users.hashPassword(req.body.password);
     Users.findOne({ username: req.body.username })
       .then((user) => {
         if (user) {
@@ -228,9 +226,7 @@ app.get("/users/:username", (req, res) => {
         birthday: Date
     }
 */
-app.put(
-  "/users/:username",
-  [
+app.put("/users/:username", [
     check("Username", "Username is required").isLength({ min: 5 }),
     check(
       "Username",
@@ -245,12 +241,13 @@ app.put(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
+    const hashedPassword = Users.hashPassword(req.body.password);
     Users.findOneAndUpdate(
       { username: req.params.username },
       {
         $set: {
           username: req.body.username,
-          password: req.body.password,
+          password: hashedPassword,
           email: req.body.email,
           birth: req.body.birthday,
         },
@@ -345,11 +342,11 @@ app.use((err, req, res, next) => {
 });
 
 // //Allowing the app via dot notation to listen the port 8080 and loging a message in the console
-// app.listen(8080, ()=>{
-// console.log('Your app is listening on port 8080.');
-// });
-
-const port = process.env.PORT || 8080;
-app.listen(port, "0.0.0.0", () => {
-  console.log("Listening on Port " + port);
+app.listen(8080, ()=>{
+console.log('Your app is listening on port 8080.');
 });
+
+// const port = process.env.PORT || 8080;
+// app.listen(port, "0.0.0.0", () => {
+//   console.log("Listening on Port " + port);
+// });

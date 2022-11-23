@@ -10,7 +10,7 @@
 <body>
     <header></header>
     <div>
-        <h1>My movies DOCUMENTATION</h1>
+        <h1>Welcome to new super flix DOCUMENTATION</h1>
         <p>
             This is an server side component aplication for movies. Users will be able to log in, sign up, and get different information about movies, directors and so on. They will also be able to update their personal information and create a list of their favorite movies.
             <br>
@@ -27,6 +27,13 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td>Allow users to log in</td>
+                <td>/login</td>
+                <td>POST</td>
+                <td>Parameters of "username" and "password"</td>
+                <td>A JSON with two pair key value parameters, one is a JSON wih the user information and the second one is the user token</td>
+              </tr>   
               <tr>
                 <td>Return a list of ALL movies to the user</td>
                 <td>/movies</td>
@@ -116,14 +123,7 @@
                 <td>DELETE</td>
                 <td>None</td>
                 <td>A text message confirming that the user was successfully removed.</td>
-              </tr>
-              <tr>
-                <td>Allow users to log in</td>
-                <td>/login</td>
-                <td>POST</td>
-                <td>Parameters of "Username" and "Password"</td>
-                <td>A JSON with two pair key value parameters, one is a JSON wih the user information and the second one is the user token</td>
-              </tr>               
+              </tr>            
           </table>
     </div>
     <footer></footer>

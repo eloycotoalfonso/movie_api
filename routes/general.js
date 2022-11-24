@@ -12,7 +12,7 @@ module.exports = (router) =>{
     });
 
     router.get("/documentation", (req, res) => {
-        res.sendFile("public/documentation.html", { root: __dirname });
+        res.sendFile("/public/documentation.html", { root: path.join(__dirname,'..') });
     });
 
     // Response to the '/secreturl' request

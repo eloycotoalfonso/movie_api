@@ -73,15 +73,18 @@ module.exports = (router) =>{
         });
     });
 	 //Get a user by its username
-    router.get("/users/:username", (req, res) => {
-        Users.find({ username: req.params.username })
-        .then((user) => {
-            res.status(201).json(user);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
+    router.get(
+		"/users/:username",
+		passport.authenticate("jwt", { session: false }),
+		(req, res) => {
+			Users.find({ username: req.params.username })
+			.then((user) => {
+				res.status(201).json(user);
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send("Error: " + err);
+			});
     });
 
     //Allow users to update their info

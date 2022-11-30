@@ -72,6 +72,7 @@ module.exports = (router) =>{
             res.status(500).send("Error: " + err);
         });
     });
+
 	 //Get a user by its username
     router.get(
 		"/users/:username",
@@ -184,4 +185,25 @@ module.exports = (router) =>{
         }
         );
     });
+    
+    //Allow existing user to deregister
+    app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+        Users.findOneAndRemove({username: req.params.username})
+        .then((user) => {
+            if(!user){
+                res.status(400).send(req.params.username + 'was not found');
+            }else{
+                res.status(200).send(req.params.username + 'was deleted');
+            }
+        })
+        .catch((err) =>{
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+    });
+
+
+
+
 }
+

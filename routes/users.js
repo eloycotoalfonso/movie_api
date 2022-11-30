@@ -187,7 +187,7 @@ module.exports = (router) =>{
     });
     
     //Allow existing user to deregister
-    app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+    router.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
         Users.findOneAndRemove({username: req.params.username})
         .then((user) => {
             if(!user){

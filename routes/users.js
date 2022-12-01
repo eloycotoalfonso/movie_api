@@ -106,8 +106,8 @@ module.exports = (router) =>{
         "username",
         "Username contains non alphanumeric characters - not allowed"
         ).isAlphanumeric(),
-        check("Password", "Paswword is required").not().isEmpty(),
-        check("Email", "Email does not appear to be valid").isEmail(),
+        check("password", "Paswword is required").not().isEmpty(),
+        check("email", "Email does not appear to be valid").isEmail(),
     ],
     passport.authenticate("jwt", { session: false }),
     (req, res) => {

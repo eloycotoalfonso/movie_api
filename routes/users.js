@@ -101,9 +101,9 @@ module.exports = (router) =>{
         }
     */
     router.put("/users/:username", [
-        check("Username", "Username is required").isLength({ min: 5 }),
+        check("username", "Username is required").isLength({ min: 5 }),
         check(
-        "Username",
+        "username",
         "Username contains non alphanumeric characters - not allowed"
         ).isAlphanumeric(),
         check("Password", "Paswword is required").not().isEmpty(),

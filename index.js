@@ -54,7 +54,6 @@ require("./passport");
 
 //Connecting the API tu the DB. There are two options the first one connects it to the local DB (testing and development purposes). The second is to connect it to the deployed DB.
 mongoose.connect('mongodb://localhost:27017/myFlixDB',{
-  // mongoose.connect('mongodb+srv://eloycoal:1234567890_Xx@myclouddb.armdees.mongodb.net/?retryWrites=true&w=majority',{
     useNewUrlParser: true, useUnifiedTopology: true});
 
 // mongoose.connect(process.env.CONNECTION_URI, {

@@ -60,7 +60,7 @@ require("./passport");
   // });
 
   
-  mongoose.connect('mongodb+srv://eloycoal:<password>@myclouddb.armdees.mongodb.net/?retryWrites=true&w=majority', {
+  mongoose.connect('mongodb+srv://eloycoal:<123456789_Xx>@myclouddb.armdees.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });

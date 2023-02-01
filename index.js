@@ -59,11 +59,16 @@ require("./passport");
   //     useUnifiedTopology: true,
   // });
 
+  
+  mongoose.connect('mongodb+srv://eloycoal:<password>@myclouddb.armdees.mongodb.net/?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// mongoose.connect(process.env.CONNECTION_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

@@ -42,6 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
     return callback(null, true);
     }
 }));*/
+
 app.use(cors());
 
 const auth = require("./routes/auth")(app);
@@ -54,8 +55,8 @@ require("./passport");
 
 //Connecting the API tu the DB. There are two options the first one connects it to the local DB (testing and development purposes). The second is to connect it to the deployed DB.
   // mongoose.connect('mongodb://localhost:27017/myFlixDB',{
-      // useNewUrlParser: true, 
-      // useUnifiedTopology: true,
+  //     useNewUrlParser: true, 
+  //     useUnifiedTopology: true,
   // });
 
 
@@ -70,7 +71,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something has failed. Please try it later!");
 });
 
-// //Allowing the app via dot notation to listen the port 8080 and loging a message in the console
+//Allowing the app via dot notation to listen the port 8080 and loging a message in the console
 // app.listen(8080, ()=>{
 // console.log('Your app is listening on port 8080.');
 // });

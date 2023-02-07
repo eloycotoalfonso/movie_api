@@ -13,7 +13,7 @@ module.exports = (router) =>{
     //Response to the /movies request (this is returning a JSON)
     router.get("/movies", passport.authenticate("jwt", { session: false }), (req, res) => {
         // app.get("/movies", function (req, res) { //Here we don't have the token autentification for developing purposes. MUST be restored once we have the developed completed!!!!!
-        Movies.find()
+        movies.find()
         .then((movies) => {
             res.status(200).json(movies);
         })
@@ -31,7 +31,7 @@ module.exports = (router) =>{
         "/movies/:title",
         passport.authenticate("jwt", { session: false }),
         (req, res) => {
-        Movies.find({ Title: req.params.title })
+        movies.find({ Title: req.params.title })
             .then((movie) => {
             console.log(movie[0]);
             res.status(200).json(movie[0]);
@@ -48,7 +48,7 @@ module.exports = (router) =>{
         "/movies/genre/:name",
         passport.authenticate("jwt", { session: false }),
         (req, res) => {
-        Movies.findOne({ "Genre.Name": req.params.name })
+        movies.findOne({ "Genre.Name": req.params.name })
             .then((movies) => {
             res.status(200).json(movies.Genre);
             })
@@ -61,7 +61,7 @@ module.exports = (router) =>{
 
     // Return data about a director
     router.get("/movies/director/:name", passport.authenticate("jwt", { session: false }), (req, res) => {
-            Movies.findOne({ "Director.Name": req.params.name })
+            movies.findOne({ "Director.Name": req.params.name })
             .then((movie) => {
             res.status(200).json(movie.Director);
             })

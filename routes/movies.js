@@ -4,7 +4,7 @@ const router = express.Router();
 const passport = require("passport");
 require("./../passport");
 
-const Movies = movieModel.movie;
+const Movies = movieModel.Movie;
 
 
 

@@ -18,6 +18,6 @@ let movieSchema = mongoose.Schema({
     Featured: Boolean
 });
  
-let Movie = mongoose.model('movie', movieSchema);
+let Movie = mongoose.model('Movie', movieSchema);
 
 module.exports.Movie = Movie;
